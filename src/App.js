@@ -1,11 +1,12 @@
 
-import './App.css';
+import './styles/App.css';
 import { Board } from './components/board';
 
 function App() {
   return (
     <div className="App">
-      <Board />
+      <Board player= "human" />
+      <Board player= "AI" />
     </div>
   );
 }

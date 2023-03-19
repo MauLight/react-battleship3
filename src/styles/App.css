@@ -1,0 +1,66 @@
+@import "ships.css";
+
+.App {
+  margin: 0 auto;
+  width: 500px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.gameboard {
+  text-align: center;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.option-container {
+  text-align: center;
+  width: 200px;
+  height: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: tomato;
+}
+
+.game-block-empty {
+  box-sizing: border-box;
+  border: 1px solid;
+  width: 20px !important;
+  height: 20px !important;
+  background-color: tomato !important;
+}
+
+.game-block-taken {
+  box-sizing: border-box;
+  border: 1px solid;
+  width: 20px !important;
+  height: 20px !important;
+  background-color: black !important;
+}
+
+.game-block-submarine {
+  box-sizing: border-box;
+  border: 1px solid;
+  width: 20px !important;
+  height: 20px !important;
+  background-color: blue !important;
+}
+
+.game-block-empty:hover {
+  background-color: rgb(255, 183, 170) !important;
+}
+
+.option-btn {
+  width: 60px !important;
+  height: 40px !important;
+  margin-left: 20px;
+  color: whitesmoke;
+}
+
+.option-btn:hover {
+  background-color: rgb(255, 183, 170);
+  color: tomato;
+  border: 1px solid rgb(255, 59, 24);
+}
