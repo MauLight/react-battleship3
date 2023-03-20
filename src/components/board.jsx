@@ -3,6 +3,8 @@ import AIshipsArray from "./optionships";
 
 export const Board = (props) => {
 
+    console.log(AIshipsArray);
+
     const gameBoard = new Array(100);
     for (let i = 0; i < gameBoard.length; i++) {
         //console.log(i);
@@ -126,6 +128,10 @@ export const Board = (props) => {
 
                 return 1;
             }
+            else if (i === index && elem === 2) {
+
+                return 3;
+            }
             else {
                 return val;
             }
@@ -149,6 +155,8 @@ export const Board = (props) => {
         console.log(startPosition);
         console.log(typeof shipLength);
 
+        /*
+
         if (isHorizontal) {
             for (let i = 0; i < shipLength; i++) {
 
@@ -163,6 +171,43 @@ export const Board = (props) => {
                 shipBoard[startPosition + i * 10] = 2
             }
         }
+*/
+
+        if (isHorizontal && startPosition > 95 ) {
+
+            let aux = 95
+
+            for (let i = 0; i < shipLength; i++) {
+
+                shipBoard[aux + i] = 2
+            }
+        }
+        else if (isHorizontal) {
+            for (let i = 0; i < shipLength; i++) {
+
+                shipBoard[startPosition + i] = 2
+
+            }
+        }
+        else if (!isHorizontal && startPosition > 50) {
+
+            let aux = startPosition - 50;
+            for (let a = 0; a < shipLength; a++) {
+
+                shipBoard[aux] = 2
+                shipBoard[aux + a * 10] = 2
+            }
+        }
+        else {
+            for (let i = 0; i < shipLength; i++) {
+
+                shipBoard[startPosition] = 2
+                shipBoard[startPosition + i * 10] = 2
+            }
+        }
+
+
+
 
 
 
@@ -229,12 +274,17 @@ export const Board = (props) => {
                         }
                         else if (elem === 1) {
                             return (
-                                <div className="btn game-block-taken border p-0" key={index} id={index} onClick={() => { handleClick(index) }}></div>
+                                <div className="btn game-block-miss border p-0" key={index} id={index}></div>
                             )
                         }
                         else if (elem === 2) {
                             return (
-                                <div className="btn game-block-submarine border p-0" key={index} id={index} ></div>
+                                <div className="btn game-block-submarine border p-0" key={index} id={index} onClick={() => { handleClick(elem, index, props.player) }} ></div>
+                            )
+                        }
+                        else if (elem === 3) {
+                            return (
+                                <div className="btn game-block-hit border p-0" key={index} id={index} ></div>
                             )
                         }
                     })
