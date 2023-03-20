@@ -21,9 +21,6 @@ export const Board = (props) => {
 
     const OptionShips = () => {
 
-
-
-
         const angleStyle = {
             "transform": `rotate(${angle}deg)`
         };
@@ -60,7 +57,7 @@ export const Board = (props) => {
         ]
 
         return (
-            <div className="option-container mt-3 pt-4">
+            <div className="option-container mt-3 pt-4 rounded">
                 {
                     shipsArr.map((ship) => {
                         return ship;
@@ -68,6 +65,9 @@ export const Board = (props) => {
                 }
                 <button className="btn option-btn" onClick={flipShip}>Flip</button>
                 <button className="btn option-btn" onClick={handleStart}>Start</button>
+                {
+                    shipsNum < 5 ? <p className="text mt-4">Drag your SHIPS to the BOARD and press START!</p> : null
+                }
             </div>
         )
     };

@@ -1,7 +1,7 @@
 @import "ships.css";
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 
-.title {
+.title, .text {
   text-align: center;
   font-family: 'Josefin Sans', sans-serif;
 }
