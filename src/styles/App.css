@@ -29,7 +29,7 @@
   height: 100px;
   display: flex;
   flex-wrap: wrap;
-  background-color: tomato;
+  background-color: #8414f9;
 }
 
 .game-block-empty {
@@ -37,7 +37,7 @@
   border: 1px solid;
   width: 20px !important;
   height: 20px !important;
-  background-color: tomato !important;
+  background-color: #8414f9 !important;
 }
 
 .game-block-miss {
@@ -72,11 +72,11 @@
   width: 60px !important;
   height: 40px !important;
   margin-left: 20px;
-  color: whitesmoke;
+  color: whitesmoke !important;
 }
 
 .option-btn:hover {
-  background-color: rgb(255, 183, 170);
-  color: tomato;
-  border: 1px solid rgb(255, 59, 24);
+  background-color: #c68eff !important;
+  color: #8414f9 !important;
+  border: 1px solid #6b00de !important;
 }

@@ -287,9 +287,14 @@ export const Board = (props) => {
         <div className="container">
             <div className="title my-3">
                 <h1>{info}</h1>
+                <div className="board-users d-flex justify-content-between w-50 mx-auto">
+                <h4>Your Board</h4>
+                <h4>AI Board</h4>
+                </div>
             </div>
 
             <div className={`${props.player} gameboard allBoards`}>
+
                 <div className="human-board">
                     {
                         board.map((elem, index) => {
@@ -330,7 +335,9 @@ export const Board = (props) => {
                         props.player === 'human' ? <OptionShips /> : null
                     }
                 </div>
+
                 <div className="AI-board">
+
                     {
                         enemyBoard.map((elem, index) => {
 
