@@ -3,29 +3,30 @@ import AIshipsArray from "./optionships";
 
 export const Board = (props) => {
 
-    console.log(AIshipsArray);
-
     const gameBoard = new Array(100);
     for (let i = 0; i < gameBoard.length; i++) {
-        //console.log(i);
         gameBoard[i] = 0;
     }
 
     const [board, setBoard] = useState(gameBoard);
     const [enemyBoard, setEnemyBoard] = useState(gameBoard);
+    const [player, setPlayer] = useState("");
     const [shipLength, setShipLength] = useState('');
     const [angle, setAngle] = useState(0);
     const [isHorizontal, setIsHorizontal] = useState(true);
-
-    //console.log(gameBoard[0]);
-
+    const [info, setInfo] = useState("REACT Battleship");
+    const [shipCount, setShipCount] = useState(null);
+    const [shipsNum, setShipsNum] = useState(0);
+    const [winner, setWinner] = useState(false);
 
     const OptionShips = () => {
 
 
+
+
         const angleStyle = {
             "transform": `rotate(${angle}deg)`
-        }
+        };
 
         const flipShip = () => {
 
@@ -37,20 +38,25 @@ export const Board = (props) => {
                 setAngle(0);
                 setIsHorizontal(!isHorizontal);
             }
-            console.log(isHorizontal);
         };
 
 
         const handleDragStart = (e) => {
-            setShipLength(parseInt(e.target.id));
+            if (shipsNum < 5) {
+                console.log(e.target.id);
+                setShipLength(parseInt(e.target.id));
+            }
+            else {
+                return;
+            }
         }
 
         const shipsArr = [
-            <div id="2" key="1" className="rounded-pill angle destroyer-preview destroyer" draggable="true" style={angleStyle} onDragStart={handleDragStart} ></div>,
-            <div id="3" key="2" className="rounded-pill angle submarine-preview submarine" draggable="true" style={angleStyle} onDragStart={handleDragStart} ></div>,
-            <div id="3" key="3" className="rounded-pill angle cruiser-preview cruiser" draggable="true" style={angleStyle} onDragStart={handleDragStart} ></div>,
-            <div id="4" key="4" className="rounded-pill angle battleship-preview battleship" draggable="true" style={angleStyle} onDragStart={handleDragStart} ></div>,
-            <div id="5" key="5" className="rounded-pill angle carrier-preview carrier" draggable="true" style={angleStyle} onDragStart={handleDragStart} ></div>
+            <div id="2" key="1" className={`rounded-pill angle destroyer-preview destroyer`} draggable="true" style={angleStyle} onDragStart={handleDragStart} ></div>,
+            <div id="3" key="2" className={`rounded-pill angle submarine-preview submarine`} draggable="true" style={angleStyle} onDragStart={handleDragStart} ></div>,
+            <div id="4" key="3" className={`rounded-pill angle cruiser-preview cruiser`} draggable="true" style={angleStyle} onDragStart={handleDragStart} ></div>,
+            <div id="5" key="4" className={`rounded-pill angle battleship-preview battleship`} draggable="true" style={angleStyle} onDragStart={handleDragStart} ></div>,
+            <div id="6" key="5" className={`rounded-pill angle carrier-preview carrier`} draggable="true" style={angleStyle} onDragStart={handleDragStart} ></div>
         ]
 
         return (
@@ -68,11 +74,24 @@ export const Board = (props) => {
 
     const handleStart = () => {
 
+        if (shipsNum < 5) {
+            setInfo("Place your SHIPS on the board!")
+            return;
+        }
+
         console.log("START!");
+
+        if (winner) {
+            setWinner(false);
+        }
+
+        setInfo("The BATTLE begins!")
+        setTimeout(() => setInfo("ATTACK you ENEMY's board!"), 5000);
+
         const aiBoard = enemyBoard.map(elem => elem);
 
         for (let i = 0; i < AIshipsArray.length; i++) {
-            if (AIshipsArray[i].isHorizontal && AIshipsArray[i].randomPos > 95 ) {
+            if (AIshipsArray[i].isHorizontal && AIshipsArray[i].randomPos > 95) {
 
                 let aux = 95
 
@@ -109,27 +128,66 @@ export const Board = (props) => {
             }
 
         }
-
-        console.log(aiBoard);
+        //console.log(aiBoard);
         setEnemyBoard(aiBoard);
+
+        let aux = 0; //Number of blocks used by the AI
+        for (let ship of aiBoard) {
+
+            if (ship === 2) {
+                aux += 1;
+            }
+        }
+
+        setShipCount(aux);
+    };
+
+    const AIPlay = (arr) => {
+
+        if (!winner) {
+            setPlayer("AI");
+
+            const emptyBlocks = [];
+            let newArr = arr.map(elem => elem);
+
+            for (let i = 0; i < newArr.length; i++) {
+                if (newArr[i] !== 1 || newArr[i] !== 3) {
+                    emptyBlocks.push(i);
+                }
+            };
+
+            console.log(emptyBlocks);
+
+            let randomNumber = Math.floor(Math.random() * emptyBlocks.length);
+            console.log(randomNumber);
+            console.log(emptyBlocks[randomNumber]);
+
+            if (newArr[emptyBlocks[randomNumber]] === 2) {
+                newArr[emptyBlocks[randomNumber]] = 3;
+                setInfo("AI hit one of your SHIPS!");
+            }
+            else if (newArr[emptyBlocks[randomNumber]] === 0) {
+                newArr[emptyBlocks[randomNumber]] = 1;
+                setInfo("AI missed!")
+            }
+
+            setBoard(newArr);
+            setTimeout(() => setInfo("ATTACK you ENEMY's board!"), 5000);
+            console.log(newArr);
+        }
 
     };
 
-
-
-
     const handleClick = (elem, i, boardUser) => {
-
-        console.log(i); // 0 to 99
 
         const playerBoard = enemyBoard.map((val, index) => { //val = 0 or 1
 
             if (i === index && elem === 0) {
-
+                setInfo("You MISSED!")
                 return 1;
             }
             else if (i === index && elem === 2) {
-
+                setInfo("You HIT an AI ship!")
                 return 3;
             }
             else {
@@ -137,159 +195,178 @@ export const Board = (props) => {
             }
 
         });
-
+        //console.log(playerBoard);
         setEnemyBoard(playerBoard);
+
+        if (!winner) {
+            setTimeout(() => setInfo("AI IS THINKING..."), 1000);
+            setTimeout(() => AIPlay(board), 3000);
+            setTimeout(() => setInfo("YOUR TURN"), 4500);
+        }
+        else {
+            return;
+        }
 
     }
 
     const handleDragOver = (e) => {
         e.preventDefault();
-        // console.log("Hey!");
     }
+
     const handleOnDrop = (e) => {
 
-        const shipBoard = board.map(elem => elem);
+        console.log(shipsNum);
+        setShipsNum(shipsNum + 1);
 
-        e.preventDefault();
-        const startPosition = parseInt(e.target.id); //position of dropped place
-        console.log(startPosition);
-        console.log(typeof shipLength);
+        if (shipsNum < 5) {
+            const shipBoard = board.map(elem => elem);
 
-        /*
+            e.preventDefault();
+            const startPosition = parseInt(e.target.id); //position of dropped place
 
-        if (isHorizontal) {
-            for (let i = 0; i < shipLength; i++) {
+            if (isHorizontal && startPosition > 95) {
 
-                shipBoard[startPosition + i] = 2
+                let aux = 95
 
+                for (let i = 0; i < shipLength; i++) {
+
+                    shipBoard[aux + i] = 2
+                }
+            }
+            else if (isHorizontal) {
+                for (let i = 0; i < shipLength; i++) {
+
+                    shipBoard[startPosition + i] = 2
+
+                }
+            }
+            else if (!isHorizontal && startPosition > 50) {
+
+                let aux = startPosition - 50;
+                for (let a = 0; a < shipLength; a++) {
+
+                    shipBoard[aux] = 2
+                    shipBoard[aux + a * 10] = 2
+                }
+            }
+            else {
+                for (let i = 0; i < shipLength; i++) {
+
+                    shipBoard[startPosition] = 2
+                    shipBoard[startPosition + i * 10] = 2
+                }
+            }
+
+            setBoard(shipBoard);
+        }
+    };
+
+
+
+    useEffect(() => {
+        setTimeout(() => setInfo("REACT Battleship"), 2000);
+    }, [board, enemyBoard]);
+
+    useEffect(() => {
+        let hits = 0
+        for (let hit of enemyBoard) {
+            if (hit === 3) {
+                hits += 1
             }
         }
-        else {
-            for (let i = 0; i < shipLength; i++) {
 
-                shipBoard[startPosition] = 2
-                shipBoard[startPosition + i * 10] = 2
-            }
+        if (hits === shipCount) { //If number of HITS equals number of Blocks used by AI, player wins
+            setInfo("YOU WIN!");
+            setEnemyBoard(gameBoard);
+            setBoard(gameBoard);
+            setWinner(true);
         }
-*/
-
-        if (isHorizontal && startPosition > 95 ) {
-
-            let aux = 95
-
-            for (let i = 0; i < shipLength; i++) {
-
-                shipBoard[aux + i] = 2
-            }
-        }
-        else if (isHorizontal) {
-            for (let i = 0; i < shipLength; i++) {
-
-                shipBoard[startPosition + i] = 2
-
-            }
-        }
-        else if (!isHorizontal && startPosition > 50) {
-
-            let aux = startPosition - 50;
-            for (let a = 0; a < shipLength; a++) {
-
-                shipBoard[aux] = 2
-                shipBoard[aux + a * 10] = 2
-            }
-        }
-        else {
-            for (let i = 0; i < shipLength; i++) {
-
-                shipBoard[startPosition] = 2
-                shipBoard[startPosition + i * 10] = 2
-            }
-        }
-
-
-
-
-
-
-
-        console.log(shipBoard);
-
-        setBoard(shipBoard);
-
-    }
+    }, [board, enemyBoard]);
 
     return (
-        <div className={`${props.player} gameboard allBoards`}>
-            <div className="human-board">
-                {
-                    board.map((elem, index) => {
-
-                        if (elem === 0) {
-                            //console.log(elem)
-                            return (
-                                <div
-                                    className="btn game-block-empty border p-0"
-                                    key={index}
-                                    id={index}
-
-                                    onDragOver={handleDragOver}
-                                    onDrop={handleOnDrop}
-                                ></div>
-                            )
-                        }
-
-                        else if (elem === 1) {
-                            return (
-                                <div className="btn game-block-taken border p-0" key={index} id={index} ></div>
-                            )
-                        }
-                        else if (elem === 2) {
-                            return (
-                                <div className="btn game-block-submarine border p-0" key={index} id={index} ></div>
-                            )
-                        }
-                    })
-                }
-                {
-
-                    props.player === 'human' ? <OptionShips /> : null
-                }
+        <div className="container">
+            <div className="title my-3">
+                <h1>{info}</h1>
             </div>
-            <div className="AI-board">
-                {
-                    enemyBoard.map((elem, index) => {
 
-                        if (elem === 0) {
-                            //console.log(elem)
-                            return (
-                                <div
-                                    className="btn game-block-empty border p-0"
-                                    key={index}
-                                    id={index}
-                                    onClick={() => { handleClick(elem, index, props.player) }}
-                                    onDragOver={handleDragOver}
-                                    onDrop={handleOnDrop}
-                                ></div>
-                            )
-                        }
-                        else if (elem === 1) {
-                            return (
-                                <div className="btn game-block-miss border p-0" key={index} id={index}></div>
-                            )
-                        }
-                        else if (elem === 2) {
-                            return (
-                                <div className="btn game-block-submarine border p-0" key={index} id={index} onClick={() => { handleClick(elem, index, props.player) }} ></div>
-                            )
-                        }
-                        else if (elem === 3) {
-                            return (
-                                <div className="btn game-block-hit border p-0" key={index} id={index} ></div>
-                            )
-                        }
-                    })
-                }
+            <div className={`${props.player} gameboard allBoards`}>
+                <div className="human-board">
+                    {
+                        board.map((elem, index) => {
+
+                            if (elem === 0) {
+                                //console.log(elem)
+                                return (
+                                    <div
+                                        className="btn game-block-empty border p-0"
+                                        key={index}
+                                        id={index}
+
+                                        onDragOver={handleDragOver}
+                                        onDrop={handleOnDrop}
+                                    ></div>
+                                )
+                            }
+
+                            else if (elem === 1) {
+                                return (
+                                    <div className="btn game-block-miss border p-0" key={index} id={index} ></div>
+                                )
+                            }
+                            else if (elem === 2) {
+                                return (
+                                    <div className="btn game-block-submarine border p-0" key={index} id={index} ></div>
+                                )
+                            }
+                            else if (elem === 3) {
+                                return (
+                                    <div className="btn game-block-hit border p-0" key={index} id={index} ></div>
+                                )
+                            }
+                        })
+                    }
+                    {
+
+                        props.player === 'human' ? <OptionShips /> : null
+                    }
+                </div>
+                <div className="AI-board">
+                    {
+                        enemyBoard.map((elem, index) => {
+
+                            if (elem === 0) {
+                                //console.log(elem)
+                                return (
+                                    <div
+                                        className="btn game-block-empty border p-0"
+                                        key={index}
+                                        id={index}
+                                        onClick={() => { handleClick(elem, index, props.player) }}
+                                        onDragOver={handleDragOver}
+                                        onDrop={handleOnDrop}
+                                    ></div>
+                                )
+                            }
+                            else if (elem === 1) {
+                                return (
+                                    <div className="btn game-block-miss border p-0" key={index} id={index}></div>
+                                )
+                            }
+                            else if (elem === 2) {
+                                return (
+                                    <div className="btn game-block-submarine border p-0" key={index} id={index} onClick={() => { handleClick(elem, index, props.player) }} ></div>
+                                )
+                            }
+                            else if (elem === 3) {
+                                return (
+                                    <div className="btn game-block-hit border p-0" key={index} id={index} ></div>
+                                )
+                            }
+                        })
+                    }
+                </div>
             </div>
         </div>
+
     )
 }

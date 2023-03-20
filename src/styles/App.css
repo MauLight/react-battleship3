@@ -1,4 +1,11 @@
 @import "ships.css";
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+
+.title {
+  text-align: center;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
 
 .allBoards {
   margin: 0 auto;
@@ -7,7 +14,8 @@
   justify-content: space-between;
 }
 
-.human-board, .AI-board {
+.human-board,
+.AI-board {
   text-align: center;
   width: 200px;
   height: 200px;
@@ -47,6 +55,7 @@
   height: 20px !important;
   background-color: blue !important;
 }
+
 .game-block-hit {
   box-sizing: border-box;
   border: 1px solid;
