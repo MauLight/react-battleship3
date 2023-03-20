@@ -172,7 +172,7 @@ export const Board = (props) => {
             }
 
             setBoard(newArr);
-            setTimeout(() => setInfo("ATTACK you ENEMY's board!"), 5000);
+           // setTimeout(() => setInfo("ATTACK you ENEMY's board!"), 7000);
             console.log(newArr);
         }
 
