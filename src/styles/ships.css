@@ -8,10 +8,6 @@
     background-color: white;
 }
 
-.destroyer-hidden {
-    display: none !important;
-  }
-
 .submarine-preview {
     width: 30px;
     height: 10px;
@@ -21,10 +17,6 @@
 .submarine {
     background-color: blue;
 }
-
-.submarine-hidden {
-    display: none !important;
-  }
 
 .cruiser-preview {
     width: 30px;
@@ -36,10 +28,6 @@
     background-color: greenyellow;
 }
 
-.cruiser-hidden {
-    display: none !important;
-  }
-
 .battleship-preview {
     width: 40px;
     height: 10px;
@@ -50,10 +38,6 @@
     background-color: gold;
 }
 
-.battleship-hidden {
-    display: none !important;
-  }
-
 .carrier-preview {
     width: 50px;
     height: 10px;
@@ -63,7 +47,3 @@
 .carrier {
     background-color: brown;
 }
-
-.carrier-hidden {
-    display: none !important;
-  }

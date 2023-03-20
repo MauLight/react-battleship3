@@ -361,7 +361,7 @@ export const Board = (props) => {
                             }
                             else if (elem === 2) {
                                 return (
-                                    <div className="btn game-block-submarine border p-0" key={index} id={index} onClick={() => { handleClick(elem, index, props.player) }} ></div>
+                                    <div className="btn game-block-empty border p-0" key={index} id={index} onClick={() => { handleClick(elem, index, props.player) }} ></div>
                                 )
                             }
                             else if (elem === 3) {
