@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <Board player= "human" />
-      <Board player= "AI" />
+
     </div>
   );
 }

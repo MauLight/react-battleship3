@@ -1,13 +1,13 @@
 @import "ships.css";
 
-.App {
+.allBoards {
   margin: 0 auto;
   width: 500px;
   display: flex;
   justify-content: space-between;
 }
 
-.gameboard {
+.human-board, .AI-board {
   text-align: center;
   width: 200px;
   height: 200px;
